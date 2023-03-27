@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'><link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="logo.ico">
+    <title>Gamers FM</title>
+</head>
+<body>
+    <div class="player">
+        <div class="image"><img class="cover" src="logo.png" alt="Cover"/>
+          <div class="filter"></div>
+        </div>
+        <div class="description">
+          <p id="Artist">Artist Name Here</p>
+          <h1 id="Title">Song Title Here</h1>
+        </div>
+      </div>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script><script  src="./script.js"></script>
+    <audio controls class="player2">
+            <source src="https://www.radioking.com/play/gamers-fm1" type="audio/mpeg">
+            <source src="https://www.radioking.com/play/gamers-fm1" type="audio/wav">
+    </audio>
+</body>
+
+<script>
+    fillTheTitle();
+    let playing = false
+    async function fillTheTitle() {
+            const post = await fetch("https://api.radioking.io/widget/radio/gamers-fm1/track/current").then((res) => res.json());
+            document.getElementById("Artist").innerHTML = post["artist"].toString();
+            document.getElementById("Title").innerHTML = post["title"].toString();
+            console.log(post["duration"])
+            let intervalId = setInterval(fillTheTitle(), 5000);
+            clearInterval(intervalId);
+    }
+</script>
+</html>
