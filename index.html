@@ -14,7 +14,13 @@
     <meta content="https://cdn.discordapp.com/attachments/790546314131013692/1090169884400422972/logo.png" property="og:image" />
     <meta content="#12c2e9" data-react-helmet="true" name="theme-color" />
 </head>
-<body>
+<body><!--
+  <div class="topnav">
+    <a class="active" href="index.html">Home</a>
+    <a href="#news">News</a>
+    <a href="#contact">Contact</a>
+    <a href="#about">About</a>
+  </div>-->
     <div class="player">
         <div class="image"><img id="cover_image" class="cover" src="logo.png" alt="Cover"/>
         </div>
@@ -38,7 +44,12 @@
             const post = await fetch("https://api.radioking.io/widget/radio/gamers-fm1/track/current").then((res) => res.json());
             document.getElementById("Artist").innerHTML = post["artist"].toString();
             document.getElementById("Title").innerHTML = post["title"].toString();
-            document.getElementById("cover_image").src=post["cover"];
+            if (post["cover"] == null){
+              document.getElementById("cover_image").src="https://cdn.discordapp.com/attachments/790546314131013692/1090169884400422972/logo.png";
+            }else{
+              document.getElementById("cover_image").src=post["cover"]
+            }
+            // document.getElementById("cover_image").src=post["cover"];
             if (post["is_live"] == false){
               document.getElementById("isLive").innerHTML = "Auto DJ";
             }else{
