@@ -11,31 +11,49 @@
 </head>
 <body>
     <div class="player">
-        <div class="image"><img class="cover" src="logo.png" alt="Cover"/>
-          <div class="filter"></div>
+        <div class="image"><img id="cover_image" class="cover" src="logo.png" alt="Cover"/>
         </div>
         <div class="description">
           <p id="Artist">Artist Name Here</p>
           <h1 id="Title">Song Title Here</h1>
         </div>
-      </div>
+        <audio controls class="player2" id="audio">
+          <source src="https://www.radioking.com/play/gamers-fm1" type="audio/mpeg">
+          <source src="https://www.radioking.com/play/gamers-fm1" type="audio/wav">
+        </audio>
+        <button type="button" onclick="button()" class="play-btn"></button>
+        <p class="AutoDJ" id="isLive">Auto DJ</p>
+      </div> 
         <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script><script  src="./script.js"></script>
-    <audio controls class="player2">
-            <source src="https://www.radioking.com/play/gamers-fm1" type="audio/mpeg">
-            <source src="https://www.radioking.com/play/gamers-fm1" type="audio/wav">
-    </audio>
 </body>
 
 <script>
     fillTheTitle();
-    let playing = false
     async function fillTheTitle() {
             const post = await fetch("https://api.radioking.io/widget/radio/gamers-fm1/track/current").then((res) => res.json());
             document.getElementById("Artist").innerHTML = post["artist"].toString();
             document.getElementById("Title").innerHTML = post["title"].toString();
-            console.log(post["duration"])
+            document.getElementById("cover_image").src=post["cover"];
+            console.log(post)
+            if (post["is_live"] == false){
+              document.getElementById("isLive").innerHTML = "Auto DJ";
+            }else{
+              document.getElementById("isLive").innerHTML = "LIVE";
+            }
             let intervalId = setInterval(fillTheTitle(), 5000);
             clearInterval(intervalId);
+    }
+    let playing = false
+    const audio = document.getElementById("audio")
+    function button(){
+      if (playing==false){
+        audio.muted = false
+        audio.play()
+        playing=true
+      }else{
+        audio.muted = true
+        playing=false
+      }
     }
 </script>
 </html>
